@@ -1,0 +1,24 @@
+<COMMANDO>
+	<UI>
+		<MEMORY LABEL="Task" VARNAME="task"
+			EVAL="&quot;Tasks&quot;" />
+		
+		<FILE_ENTRY LABEL="Source" VARNAME="source" />
+		<FILE_ENTRY LABEL="Target" VARNAME="target" />
+			
+		<ENTRY LABEL="Parameters" VARNAME="params" />
+	</UI>
+
+	<COMMANDS>
+		<COMMAND SHELL="System">
+			import com.applang.berichtsheft.*;
+			buf = new StringBuffer();
+			script = BerichtsheftApp.berichtsheftPath(new String[]{"Skripte/process.sh"});
+			buf.append("\"" + script + "\" \"" + task + "\" \"" + source + "\" \"" + target + "\"");
+			if (params.length() > 0)
+				buf.append(" "+params);
+			// return value
+			return buf.toString();
+		</COMMAND>
+	</COMMANDS>
+</COMMANDO>

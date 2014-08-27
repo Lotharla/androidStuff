@@ -1,0 +1,39 @@
+commandoANDROID_FILE_ENTRY(view,pane,ns,label,var,options)
+{
+	entry = new JTextField(20);
+	value = ns.getVariable(var);
+	if(value != null)
+		entry.setText(value.toString());
+
+	valueChanged()
+	{
+		ns.setVariable(var,entry.getText());
+	}
+
+	dim = entry.getPreferredSize();
+	dim.width = Integer.MAX_VALUE;
+	entry.setMaximumSize(dim);
+
+	box = new Box(BoxLayout.X_AXIS);
+	box.add(entry);
+	box.add(Box.createHorizontalStrut(12));
+
+	icon = com.applang.PluginUtils.loadIcon("/images/android_21x22.png");
+	btn = new RolloverButton(icon);
+	btn.setToolTipText("Choose a file");
+	listener = new ActionListener()
+	{
+		actionPerformed(evt)
+		{
+			text = com.applang.components.AndroidBridge.chooseFileFromSdcard(view, false, entry.getText());
+			if (text != null)
+				entry.setText(text);
+		}
+	};
+	btn.addActionListener(listener);
+	box.add(btn);
+
+	pane.addComponent(label,box);
+
+	return this;
+}

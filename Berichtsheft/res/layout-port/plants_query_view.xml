@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/image_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75" >
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        
+        <TextView
+            android:id="@+id/largeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:text="no query"
+            android:textSize="30.0sp" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/query_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="249dp"
+        android:layout_weight="0.13"
+        android:gravity="bottom|center"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="30dp" />
+
+        <EditText
+            android:id="@+id/query_edit_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:hint="@string/bot_name" 
+            android:textColorHint="@color/light_green"/>
+
+            <EditText
+                android:id="@+id/query_edit_fam"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dip"
+                android:hint="@string/bot_family" 
+                android:textColorHint="@color/close_mangenta"/>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0.77" />
+
+        <LinearLayout
+            android:id="@+id/query_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/query_check_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="showTagesberichte"
+                android:padding="20dp"
+                android:text="@string/query_check"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/query_show_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="showPflanze"
+                android:padding="20dp"
+                android:text="@string/query_show"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="30dp" />
+    </LinearLayout>
+
+</LinearLayout>

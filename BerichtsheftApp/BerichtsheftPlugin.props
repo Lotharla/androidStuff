@@ -1,0 +1,220 @@
+# Properties file for Berichtsheft plugin
+# $Id$
+
+# jEdit only needs to load the plugin the first time the user accesses it
+# the presence of this property also tells jEdit the plugin is using the new API
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.activate=startup
+
+# These two properties are required for all plugins
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.name=Berichtsheft
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.author=Lothar Langer
+
+# Even if you don't store additional files, this is a good idea to set:
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.usePluginHome=true
+
+# version number == jEdit version number
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.version=5.0
+
+# online help
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.docs=index.html
+
+# List dependencies of plugins with .depend.N property suffix:
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.depend.0=jdk 1.6
+# See jEdit.getBuild() to understand version numbering scheme.
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.depend.1=jedit 05.00.01.00
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.depend.2=plugin console.ConsolePlugin 5.1
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.depend.3=plugin projectviewer.ProjectPlugin 3.5.0
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.description=This plugin provides a dockable panel for controlling the 'Berichtsheft' process.
+
+# plugin menu
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.menu=datadock \
+	notedock \
+	- \
+	datadock.choose-uri \
+	datadock.update-uri \
+	berichtsheft.spellcheck-selection
+#	magic.data-manage
+
+# action labels for actions supplied by dockables.xml
+datadock.label=Data
+notedock.label=Note Picker
+
+# action messages for actions supplied by dockables.xml and commando commands
+berichtsheft.no-text-selection.message=No selected text in current buffer available
+datadock.transport-check.message=required field '%s' does not correspond to a column in table '%s'
+datadock.transport-fail.message=transport '%s' failed with '%s'
+datadock.transport-to-buffer.message=No selected cells in table detected
+datadock.transport-to-buffer.message.1=Determine insertion point for this
+datadock.template-evaluation.message.1=template evaluation : no field identified
+datadock.template-evaluation.message.2=template evaluation inconsistent
+datadock.transport-uri.message=No URI available
+manager.update.message.1='%s' updated
+manager.add.message.1='%s' NOT added
+manager.add.message.2='%s' added
+manager.remove.message.1='%s' not found
+manager.remove.message.2='%s' removed
+manager.delete.message=Delete '%s'
+manager.delete.message.1=Delete this :
+manager.save.message.1=Save changes to '%s'
+manager.save.message.2=Save '%s'
+dataview.connect.message=connecting '%s'\n...
+dataview.no-info-for-table.message=no information available about table '%s'
+dataview.no-primary-key.message=primary key column is indeterminate
+dataview.query.message=query on '%s' failed with message '%s'
+dataview.updateOrInsert.message=%d record(s) inserted, %d updated
+dataview.updateOrInsert.message.1=updateOrInsert on '%s' failed with message '%s'
+dataview.updateOrInsert.message.2=%d. selected record -- processing stopped
+dataview.updateOrInsert.message.3=%d. selected record -- no insert
+dataview.updateOrInsert.message.4=%d. selected record -- no update
+datadock.scan.message.1=input not ending with a closing record decorator
+datadock.scan.message.2=input not starting with an opening record decorator
+datadock.scan.message.3=problem recognizing a record
+datadock.split.message.1=record (%d) not starting with the opening field separator
+datadock.split.message.2=record (%d) : field '%s' not recognized
+berichtsheft.doConversion.message.1=conversion script '%s' not available
+berichtsheft.doConversion.message.2=conversion script '%s' failed on value '%s'
+datadock.dockable-required.message=dockable window 'Data' required open !
+berichtsheft.tool-missing.message=external tool '%s' not available
+berichtsheft.android-devices.message=No Android devices found
+berichtsheft.android-sdcard-directory.message=need name of a directory here (trailing '/')
+dataview.prompt-update.message=Update this record ?
+berichtsheft.export-document.message.1=document '%s' updated
+berichtsheft.export-document.message.2=problems processing the document, see Utilities->Troubleshooting->Activity log !!!
+dataview.sqlite-required.message=Only SQLite database files are acceptable
+doublefeature.dummy-tooltip.message=<html>click here to view the content of '%s'<br>C + click here for an alternative view</html>
+
+# plugin option pane
+plugin.com.applang.berichtsheft.plugin.BerichtsheftPlugin.option-pane=berichtsheft
+
+# Option pane activation BeanShell snippet
+options.berichtsheft.code=new com.applang.berichtsheft.plugin.BerichtsheftOptionPane();
+
+# Option pane labels
+options.berichtsheft.label=Berichtsheft
+options.berichtsheft.sdk=Android SDK :
+options.berichtsheft.adb=ADB command :
+options.berichtsheft.awk=AWK command :
+options.berichtsheft.sqlite=SQLite command :
+options.berichtsheft.choose=Choose
+options.berichtsheft.choose-uri.title=Choose a Berichtsheft database
+options.berichtsheft.choose-font=Font:
+options.berichtsheft.show-toolbar.title=Display toolbar
+options.berichtsheft.tools.title=Tools
+options.berichtsheft.transport.title=Transport options
+options.berichtsheft.field-separator.title=Field separator :
+options.berichtsheft.field-decoration.title=Field decoration :
+options.berichtsheft.record-separator.title=Record separator :
+options.berichtsheft.record-decoration.title=Record decoration :
+
+# window title
+datadock.title=Data
+notedock.title=Note Picker
+datadock.weather.title=Wetter
+berichtsheft.shell.title=Berichtsheft
+berichtsheft.spellcheck-selection.title=Spellchecking text selection
+
+# window toolbar buttons
+datadock.weather.icon=/res/drawable/weather.png
+datadock.choose-db.icon=22x22/actions/document-open.png
+datadock.choose-uri.icon=/images/book_open_22x22.png
+datadock.update-uri.icon=/images/refresh_22x22.png
+datadock.transport-to-buffer.icon=22x22/actions/run-to-buffer.png
+datadock.transport-from-buffer.icon=22x22/actions/run-to-buffer.png
+berichtsheft.spellcheck-selection.icon=/com/inet/jortho/icon.png
+berichtsheft.insert-enter.icon=/images/enter_22x22.png
+berichtsheft.insert-field.icon=/images/insert_22x22.png
+berichtsheft.insert-function.icon=/images/function_22x22.png
+berichtsheft.edit-function.icon=/images/function_22x22.png
+berichtsheft.export-document.icon=/images/export_22x22.png
+
+manager.add.icon=/org/gjt/sp/jedit/icons/themes/tango/22x22/actions/list-add.png
+manager.remove.icon=/org/gjt/sp/jedit/icons/themes/tango/22x22/actions/list-remove.png
+manager.update-change.icon=/images/update_22x22.png
+manager.update-change.label=confirm changes
+manager.erase-change.icon=/images/erase_22x22.png
+manager.erase-change.label=dismiss changes
+
+manager.action-PREVIOUS.icon=/org/gjt/sp/jedit/icons/themes/tango/22x22/actions/go-previous.png
+manager.action-PREVIOUS.label=previous note(s)
+manager.action-NEXT.icon=/org/gjt/sp/jedit/icons/themes/tango/22x22/actions/go-next.png
+manager.action-NEXT.label=next note(s)
+manager.action-FIRST.icon=/org/gjt/sp/jedit/icons/themes/tango/22x22/actions/go-first.png
+manager.action-FIRST.label=frst note(s)
+manager.action-LAST.icon=/org/gjt/sp/jedit/icons/themes/tango/22x22/actions/go-last.png
+manager.action-LAST.label=last note(s)
+manager.action-CALENDAR.icon=/images/calendar_22x22.png
+manager.action-CALENDAR.label=pick date from calendar
+manager.action-DATABASE.icon=/images/book_open_22x22.png
+manager.action-DATABASE.label=choose database
+manager.action-DOCUMENT.icon=/images/export_16x16.png
+manager.action-DOCUMENT.label=export document
+manager.action-ADD.icon=/images/plus_16x16.png
+manager.action-ADD.label=enter 'update' mode
+manager.action-UPDATE.icon=/images/update_16x16.png
+manager.action-UPDATE.label=update note(s)
+manager.action-INSERT.icon=/images/plus_16x16.png
+manager.action-INSERT.label=insert
+manager.action-MODIFY.icon=/images/bausteine_16x16.png
+manager.action-MODIFY.label=modify
+manager.action-DELETE.icon=/images/minus_16x16.png
+manager.action-DELETE.label=delete
+manager.action-SPELLCHECK.icon=/images/abc_16x16.png
+manager.action-SPELLCHECK.label=spell check
+manager.action-PROFILE.icon=/images/properties_24x24.png
+manager.action-PROFILE.label=Profile
+manager.action-PICK.icon=/images/pick_22x22.png
+manager.action-PICK.label=pick note(s)
+manager.action-DATE.label=date or week of year
+manager.action-TITLE.label=title
+manager.action-IMPORT.icon=/images/import_16x16.png
+manager.action-IMPORT.label=import data
+manager.action-TEXT.icon=/images/export_16x16.png
+manager.action-TEXT.label=export text
+manager.action-ANDROID.icon=/images/android_15x16.png
+manager.action-ANDROID.label=synchronize with exported data on device
+manager.action-VMFILE.icon=/images/book_open_16x16.png
+manager.action-VMFILE.label=choose vm-file
+manager.action-STRUCT.icon=/images/structure_16x16.png
+manager.action-STRUCT.label=show structure
+manager.action-TOGGLE1.label.1=Table
+manager.action-TOGGLE1.label.2=Form
+manager.action-TOGGLE2.label.1=Text
+manager.action-TOGGLE2.label.2=Script
+
+# action labels for actions supplied by actions.xml
+datadock.choose-db.label=Choose database file
+datadock.choose-uri.label=Choose data source
+datadock.update-uri.label=Update data source view
+datadock.transport-from-buffer.label=Pull selected text from current buffer into database
+datadock.transport-to-buffer.label=Push selected items to current buffer
+datadock.download-to-buffer.label=Download content to current buffer
+berichtsheft.spellcheck-selection.label=Spellcheck selection
+#magic.data-manage.label=Manage data
+manager.add.label=add new item
+manager.remove.label=remove old item
+berichtsheft.insert-enter.label=insert 'new line' character into template at current position
+berichtsheft.insert-field.label=insert name of column into template at current position
+berichtsheft.insert-function.label=insert name of a conversion function at current position
+berichtsheft.edit-function.label=edit functions connected to the schema
+berichtsheft.export-document.label=export to ODT document
+berichtsheft.transport-push.label=push (db to buffer)
+berichtsheft.transport-pull.label=pull (buffer to db)
+berichtsheft.transport-download.label=download
+
+# default settings
+options.berichtsheft.show-toolbar=true
+options.berichtsheft.show-uri=true
+options.berichtsheft.font=Monospaced
+options.berichtsheft.fontstyle=0
+options.berichtsheft.fontsize=14
+options.berichtsheft.field-separator=tab
+options.berichtsheft.field-decoration=none
+options.berichtsheft.record-separator=newline
+options.berichtsheft.record-decoration=none
+
+commando.visible.Android=true
+commando.visible.Transport=true
+commando.visible.Dokumente=true
+commando.visible.Wetter=true
+commando.visible.Spezial=true
+commando.extras=Format

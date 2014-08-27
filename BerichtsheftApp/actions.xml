@@ -1,0 +1,36 @@
+<!-- Action definition file for Berichtsheft plugin -->
+<!-- $Id$
+			Macros.message(view, "Hello world!");
+-->
+
+<!DOCTYPE ACTIONS SYSTEM "actions.dtd">
+
+<ACTIONS>
+	<ACTION NAME="datadock.choose-uri">
+		<CODE>
+			import com.applang.berichtsheft.plugin.*;
+			dockable = (DataDockable) BerichtsheftPlugin.getDockable(view, "datadock", true);
+			dockable.chooseUri();
+		</CODE>
+	</ACTION>
+	<ACTION NAME="datadock.update-uri">
+		<CODE>
+			import com.applang.berichtsheft.plugin.*;
+			dockable = (DataDockable) BerichtsheftPlugin.getDockable(view, "datadock", true);
+			dockable.updateUri();
+		</CODE>
+	</ACTION>
+	<ACTION NAME="berichtsheft.spellcheck-selection">
+		<CODE>
+			import com.applang.berichtsheft.plugin.*;
+			BerichtsheftPlugin.spellcheckSelection(view);
+		</CODE>
+	</ACTION>
+	<ACTION NAME="magic.data-manage">
+		<CODE>
+			import com.applang.berichtsheft.plugin.*;
+			BerichtsheftPlugin.installDataManager(editPane);
+		</CODE>
+	</ACTION>
+</ACTIONS>
+

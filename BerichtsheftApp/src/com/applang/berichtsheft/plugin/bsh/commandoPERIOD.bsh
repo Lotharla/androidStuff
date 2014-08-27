@@ -1,0 +1,39 @@
+commandoPERIOD(view,pane,ns,label,var,options)
+{
+	import com.applang.*;
+	import com.applang.components.*;
+	
+	entry = new JTextField(30);
+	no = Util.toInt(0, ns.getVariable(var));
+	entry.setText(DatePicker.Period.getDescription(no));
+
+	valueChanged()
+	{
+	}
+
+	dim = entry.getPreferredSize();
+	dim.width = Integer.MAX_VALUE;
+	entry.setMaximumSize(dim);
+
+	box = new Box(BoxLayout.X_AXIS);
+	box.add(entry);
+	box.add(Box.createHorizontalStrut(12));
+
+	icon = PluginUtils.loadIcon("/images/calendar_22x22.png");
+	btn = new RolloverButton(icon);
+	btn.setToolTipText("Pick a period");
+	listener = new ActionListener()
+	{
+		actionPerformed(evt)
+		{
+			DatePicker.Period.pick(no);
+			entry.setText(DatePicker.Period.description());
+		}
+	};
+	btn.addActionListener(listener);
+	box.add(btn);
+
+	pane.addComponent(label,box);
+
+	return this;
+}

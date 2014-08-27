@@ -1,0 +1,143 @@
+<project name="BerichtsheftApp" basedir=".." default="pipe">
+	<description>
+    This is an ant file for performing Berichtsheft specific tasks.
+	</description>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+	  <classpath>
+		<pathelement location="${ant.home}/lib/ant-contrib-1.0b3.jar"/>
+	  </classpath>
+	</taskdef>
+		
+  	<property file="berichtsheft.properties"/>
+	<property name="debug.out" location="/tmp/debug.out" />
+	<property name="params.xml" location=".jedit/plugins/berichtsheft/Skripte/params.xml" />
+	<property name="content.xml" location=".jedit/plugins/berichtsheft/Skripte/content.xml" />
+	<property name="content.xsl" location=".jedit/plugins/berichtsheft/Skripte/content.xsl" />
+	<property name="control.xsl" location=".jedit/plugins/berichtsheft/Skripte/control.xsl" />
+	<property name="mask.xsl" location=".jedit/plugins/berichtsheft/Skripte/mask.xsl" />
+	<property name="mask.html" location="/tmp/temp.html" />
+	<property name="src-dir" location="src" />
+	<property name="bin-dir" location="bin" />
+		
+    <path id="project.class.path">
+    	<pathelement location="${bin-dir}/"/>
+		<fileset dir=".jedit/jars">
+			<exclude name="BerichtsheftPlugin.jar"/>
+			<filename name="*.jar" />
+		</fileset>
+    	<pathelement location="/home/lotharla/libs/junit-4.8.2/junit3.8.2.jar"/>
+    </path>
+		    	
+	<target name="compile">
+		<javac includeantruntime="false" 
+			srcdir="${src-dir}"
+			destdir="${bin-dir}">
+			<classpath refid="project.class.path" />
+		</javac>
+	</target>
+	
+	<target name="mask.test" depends="compile">
+	    <junit>
+	        <test name="com.applang.berichtsheft.test.MiscTests" methods="testMimicry" todir="/tmp"/>
+	        <sysproperty key="user.dir" value="${basedir}"/>
+	    	<classpath refid="project.class.path" />
+	        <formatter type="plain" usefile="false" />
+	    </junit>
+	</target>
+    
+    <target name="NotePicker">
+        <java fork="true" spawn="true" classname="com.applang.components.NotePicker">
+			<classpath refid="project.class.path" />
+        </java>
+    </target>
+	
+	<target name="integrate.weathers">
+		<exec executable = "bash">
+			<arg value=".jedit/plugins/berichtsheft/Skripte/process.sh" />
+			<arg value="integrate_weathers" />
+		</exec>
+	</target>
+    
+    <target name="start.echo">
+        <java fork="true" spawn="true" classname="echo.MyEchoServer">
+			<classpath>
+		    	<pathelement location="${bin-dir}/"/>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="stop.echo">
+        <java fork="true" spawn="true" classname="echo.MyEchoServer">
+			<classpath>
+		    	<pathelement location="${bin-dir}/"/>
+            </classpath>
+        	<arg value=""/>
+        	<arg value="-no"/>
+        </java>
+	</target>
+		    	
+	<target name="init">
+		<touch file="/tmp/control.xml"/>
+	</target>
+		    	
+	<target name="test.debug" depends="init">
+		<delete file="/tmp/temp.xml" />
+		<xslt in="/tmp/control.xml" out="/tmp/temp.xml" style=".jedit/plugins/berichtsheft/Skripte/debug.xsl" classpathref="project.class.path">
+		</xslt>
+	</target>
+	    	
+	<target name="locate.ids" depends="init">
+		<xslt in="/tmp/control.xml" out="/tmp/content.xml" style="${content.xsl}" classpathref="project.class.path">
+			<param name="inputfile" expression="${content.xml}"/>
+			<param name="control" expression="-1"/>
+		</xslt>
+		<antcall target="odt.update" />
+	</target>
+		    	
+	<target name="odt.update">
+		<zip destfile=".jedit/plugins/berichtsheft/Dokumente/Tagesberichte.odt"
+			basedir="/tmp"
+			includes="content.xml"
+			update="true"
+		/>
+	</target>
+		    	
+	<target name="pipe.1" depends="init">
+		<delete file="/tmp/control.xml"/>
+		<xslt in="${params.xml}" out="/tmp/control.xml" style="${control.xsl}" classpathref="project.class.path">
+			<param name="debug" expression="no"/>
+		</xslt>
+	</target>
+	    	
+	<target name="pipe.2">
+		<delete file="/tmp/content.xml"/>
+		<xslt in="/tmp/control.xml" out="/tmp/content.xml" style="${content.xsl}" classpathref="project.class.path">
+			<param name="inputfile" expression="${content.xml}"/>
+			<param name="debug" expression="no"/>
+		</xslt>
+		<antcall target="odt.update" />
+	</target>
+		    	
+	<target name="pipe" depends="pipe.1, pipe.2" />
+	    	
+	<target name="mask.1">
+		<delete file="${mask.html}" />
+		<xslt in="${content.xml}" out="${mask.html}" style="${mask.xsl}" classpathref="project.class.path">
+			<param name="mode" expression="1"/>
+			<param name="debug" expression="no"/>
+		</xslt>
+	</target>
+	    	
+	<target name="mask.2">
+		<delete file="/tmp/content.xml" />
+		<xslt in="${content.xml}" out="/tmp/content.xml" style="${mask.xsl}" classpathref="project.class.path">
+			<param name="mode" expression="2"/>
+			<param name="debug" expression="no"/>
+		</xslt>
+	</target>
+		    	
+	<target name="mask" depends="mask.1">
+		<antcall target="mask.2" />
+	</target>
+</project>

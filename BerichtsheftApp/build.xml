@@ -1,0 +1,207 @@
+<project name="BerichtsheftPlugin" default="build">
+	<description>
+    This is an ant build.xml file for building the Berichtsheft plugin for jEdit.
+	</description>
+
+	<property name="src.dir" value="src" />
+	<property name="bin.dir" value="bin" />
+	<property name="build.support" value="build-support" />
+  	<property file="build.properties"/>
+	<property file="${build.support}/build.properties"/>
+	<property name="user-doc.xml" location = "users-guide.xml"/>
+	<property name="user-doc.xsl" location = "${build.support}/users-guide.xsl"/>
+	<property name="user-doc.out" location = "${build.docs}/index.html"/>
+	
+	<import file="${build.support}/plugin-build.xml" />
+
+    <!-- This selector defines extra files to be included
+         in the plugin's JAR file. The context of the
+         selector is the plugin's directory (${basedir}),
+         so it will not work for files outside the plugin
+         directory. For those cases, use the "build.prepare"
+         target. By default, it's empty.                    -->
+	<selector id="packageFiles">
+		<or>
+			<filename name="*.txt" />
+		</or>
+	</selector>
+
+    <!-- This selector defines the files that will be
+         compiled by the "compile" target. Define here which
+         files under ${src.dir} will be compiled when the
+         "compile" task is called.                          -->
+    <selector id="compileFiles">
+		<or>
+        	<filename name="**/*.java" />
+		</or>
+    </selector>
+	
+    <path id="project.class.path">
+		<fileset dir=".jedit/jars">
+			<exclude name="BerichtsheftPlugin.jar"/>
+			<filename name="*.jar" />
+		</fileset>
+    </path>
+    
+    <target name="build.prepare">
+<!--        <delete dir="${build.classes}/com/applang"/>
+        <mkdir dir="${build.classes}/com/applang"/>
+        <copy todir="${build.classes}/com/applang" includeEmptyDirs="false">
+            <fileset dir="${basedir}/bin/com/applang">
+            	<or>
+	            	<filename name="Util.class" />
+	            	<filename name="Util$*.class" />
+	            	<filename name="Util1*.class" />
+	            	<filename name="VelocityUtil*.class" />
+	            	<filename name="UserContext*.class" />
+	    			<filename name="BaseDirective*.class" />
+	    			<filename name="PromptDirective*.class" />
+	    			<filename name="CursorDirective*.class" />
+	    			<filename name="SpinnerDirective*.class" />
+	    			<filename name="Dialogs*.class" />
+            	</or>
+            </fileset>
+        </copy>
+        <mkdir dir="${build.classes}/images"/>
+        <copy todir="${build.classes}/images" includeEmptyDirs="false">
+            <fileset dir="${basedir}/${src.dir}/images">
+        		<filename name="*" />
+            </fileset>
+        </copy> -->
+    </target>
+    
+    <target name="build.post">
+<!--		<jar jarfile=".jedit/jars/BerichtsheftPlugin.jar" 
+			update="true">
+			<fileset dir="/home/lotharla/" casesensitive="yes">
+				<include name="sqlite4java-282/*.jar"/>
+				<include name="sqlite4java-282/*.so"/>
+				<include name="sqlite4java-282/*.dll"/>
+				<include name="sqlite4java-282/*.jnilib"/>
+			</fileset>
+		</jar> -->
+    </target>
+    
+    <property name="abs.build.dir" location="${build.dir}"/>
+	<tempfile property="temp.sh" prefix="link" suffix=".sh"/>
+    
+    <target name="compile">
+    	<echo file="${temp.sh}" append="false">
+#!/bin/sh
+mkdir ${abs.build.dir} 2&gt;/dev/null
+cd ${abs.build.dir}
+rm -rf classes
+ln -s ../bin classes
+rm $0
+		</echo>
+    	<echo message="${temp.sh}" />
+		<exec executable = "bash">
+			<arg value="${temp.sh}" />
+		</exec>
+    </target>
+	
+    <path id="JUnit.libraryclasspath">
+        <pathelement location="/opt/eclipse-4.3.2/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+    </path>
+    <path id="run.class.path">
+		<fileset dir=".jedit">
+			<filename name="**/*.jar" />
+		</fileset>
+		<path refid="JUnit.libraryclasspath" />
+    </path>
+	
+	<target name="run" depends="build">
+        <java fork="true" jar=".jedit/jedit.jar"
+            classpathref="run.class.path">
+			<arg value="-nosplash"/>
+			<arg value="-settings=.jedit"/>
+        </java>
+	</target>
+	
+	<target name="run-special" depends="build">
+        <java fork="true" classname="com.applang.components.DataConfiguration"
+            classpathref="run.class.path">
+			<arg value="-nosplash"/>
+			<arg value="-settings=.jedit"/>
+        </java>
+	</target>
+	
+	<macrodef name="run.debug">
+		<attribute name="class.name" default="org.gjt.sp.jedit.jEdit" />
+		<attribute name="jvm.arg" default="-agentlib:jdwp=transport=dt_socket,server=y,address=localhost:5005,timeout=60000" />
+		<sequential>
+			<java classname="@{class.name}"
+			      fork="true" spawn="true"
+			      classpathref="run.class.path">
+				<jvmarg value="@{jvm.arg}"/>
+				<arg value="-nosplash"/>
+				<arg value="-settings=.jedit"/>
+			</java>
+		</sequential>
+	</macrodef>
+	
+	<target name="run-debug" depends="build">
+		<run.debug />
+	</target>
+
+	<target name="run-nodebug" depends="build">
+		<run.debug jvm.arg="-da"/>
+	</target>
+	
+	<target name="run-debug-special" depends="build">
+		<run.debug class.name="com.applang.berichtsheft.plugin.DataDockable" />
+	</target>
+<!--
+		<run.debug class.name="com.applang.berichtsheft.BerichtsheftApp" />
+ -->
+	<target name="run-nodebug-special" depends="build">
+		<run.nodebug class.name="com.applang.berichtsheft.plugin.DataDockable" />
+	</target>
+
+	<target name="test-special" depends="build">
+		<junit printsummary="yes" fork="yes" haltonfailure="yes">
+			<formatter type="plain"/>
+			<test todir="reports" name="com.applang.berichtsheft.test.ProviderTests"/>
+			<classpath>
+				<path refid="run.class.path" />
+			</classpath>
+		</junit>
+	</target>
+<!--
+	<property name="test" value="HelperTests" />
+	<property name="tests" value="testShellRun" />
+ -->
+	<property name="test" value="MiscTests" />
+	<property name="tests" value="testOdtDokument" />
+	
+	<target name="ensure-test-name" unless="test">
+	    <fail message="You must run this target with -Dtest=TestName"/>
+	</target>
+
+	<target name="run-test" description="Runs the test you specify on the command line with -Dtest=" 
+		depends="build, ensure-test-name">
+	    <junit printsummary="withOutAndErr" fork="yes"> 
+	    	<sysproperty key="tests" value="${tests}"/>
+	        <classpath refid="run.class.path" />
+	        <formatter type="plain"/>
+	        <batchtest>
+	            <fileset dir="src">
+	                <include name="**/${test}.java"/>
+	            </fileset>
+	        </batchtest>
+	    </junit>
+	</target>
+<!--
+		<echo file="/tmp/output.txt" message="jedit.settings.files : ${toString:jedit.settings.files}" />
+ -->
+	<target name="clean.jedit.settings.files">
+		<delete>
+	        <fileset dir=".jedit">
+				<exclude name="jedit.jar"/>
+				<include name="*" />
+				<include name="DockableWindowManager/*" />
+	        </fileset>
+		</delete>
+	</target>
+	
+</project>
